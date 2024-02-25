@@ -1,24 +1,71 @@
-import logo from './logo.svg';
+import React, { useState } from 'react'
 import './App.css';
 
 function App() {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+
+  const onButtonClick = () => {
+    setEmailError('')
+    setPasswordError('')
+  
+    // Check if the user has entered both fields correctly
+    if ('' === email) {
+      setEmailError('Please enter your email')
+      return
+    }
+  
+    if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+      setEmailError('Please enter a valid email')
+      return
+    }
+  
+    if ('' === password) {
+      setPasswordError('Please enter a password')
+      return
+    }
+  
+    if (password.length < 7) {
+      setPasswordError('The password must be 8 characters or longer')
+      return
+    }
+  
+    alert(email+"\n"+password)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={'mainContainer'}>
+    <div className={'titleContainer'}>
+      <div>Invoice Tracker</div>
     </div>
+    <br />
+    <div className={'inputContainer'}>
+      <input
+        value={email}
+        placeholder="Enter your email here"
+        onChange={(ev) => setEmail(ev.target.value)}
+        className={'inputBox'}
+      />
+      <label className="errorLabel">{emailError}</label>
+    </div>
+    <br />
+    <div className={'inputContainer'}>
+      <input
+        value={password}
+        placeholder="Enter your password here"
+        onChange={(ev) => setPassword(ev.target.value)}
+        className={'inputBox'}
+      />
+      <label className="errorLabel">{passwordError}</label>
+    </div>
+    <br />
+    <div className={'inputContainer'}>
+      <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Log in'} />
+    </div>
+  </div>
   );
 }
 
