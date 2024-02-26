@@ -1,0 +1,16 @@
+.flex-container {
+    display: inline-block;
+    justify-content:left;
+    align-items: left;
+    padding: 50px;
+}
+
+.pages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    margin: 20px;
+}
