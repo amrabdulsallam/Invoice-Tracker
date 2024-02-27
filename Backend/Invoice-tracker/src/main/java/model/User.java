@@ -32,11 +32,11 @@ public class User implements Serializable {
 
     @CreationTimestamp
     @Column(name = "signup_date")
-    private Date signup_date;
+    private Date signupDate;
 
     @Override
     public String toString() {
-        return "User: " + this.email + " , " + "Role: " + this.role + " , " + "Signup Date: " + this.signup_date;
+        return "User: " + this.email + " , " + "Role: " + this.role + " , " + "Signup Date: " + this.signupDate;
     }
 
 }
