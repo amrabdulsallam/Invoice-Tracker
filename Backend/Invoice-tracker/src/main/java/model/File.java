@@ -26,6 +26,10 @@ public class File implements Serializable {
     @Column(name = "upload_date")
     private Date uploadDate;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Override
     public String toString() {
         return "File Name: " + this.fileName + " , " + "File Path: " + this.filePath + " , " +

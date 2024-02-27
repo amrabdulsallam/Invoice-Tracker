@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -33,6 +34,9 @@ public class User implements Serializable {
     @CreationTimestamp
     @Column(name = "signup_date")
     private Date signupDate;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<File> files;
 
     @Override
     public String toString() {
