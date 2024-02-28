@@ -1,4 +1,4 @@
-package model;
+package com.example.Invoicetracker.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
