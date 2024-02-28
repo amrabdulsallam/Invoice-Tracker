@@ -38,6 +38,9 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<File> files;
 
+    @OneToMany(mappedBy = "userHistory", cascade = CascadeType.ALL)
+    private List<History> histories;
+
     @Override
     public String toString() {
         return "User: " + this.email + " , " + "Role: " + this.role + " , " + "Signup Date: " + this.signupDate;

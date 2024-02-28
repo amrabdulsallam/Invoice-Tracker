@@ -25,6 +25,14 @@ public class History implements Serializable {
     @Column(name = "history_date")
     private Date historyDate;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User userHistory;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "file_id")
+    private File fileHistory;
+
     @Override
     public String toString() {
         return "Status : " + this.status + " , " + "Date : " + this.historyDate;
