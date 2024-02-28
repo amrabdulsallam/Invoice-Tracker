@@ -1,8 +1,8 @@
-package model;
+package com.example.Invoicetracker.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import model.enums.Status;
+import com.example.Invoicetracker.model.enums.Status;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;

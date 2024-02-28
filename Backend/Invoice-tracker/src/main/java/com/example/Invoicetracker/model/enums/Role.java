@@ -1,4 +1,4 @@
-package model.enums;
+package com.example.Invoicetracker.model.enums;
 
 public enum Role {
     USER,
