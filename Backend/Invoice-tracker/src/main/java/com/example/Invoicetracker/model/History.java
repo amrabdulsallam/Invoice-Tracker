@@ -25,11 +25,11 @@ public class History implements Serializable {
     @Column(name = "history_date")
     private Date historyDate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     private User userHistory;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "file_id")
     private File fileHistory;
 

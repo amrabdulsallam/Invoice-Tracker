@@ -21,4 +21,10 @@ public interface FileRepository extends JpaRepository<File, Long> {
             " WHERE file.file_name = fileName ")
     public Optional<File> getFileByName(String fileName);
 
+    @Query(nativeQuery = true, value = " " +
+            " SELECT f.id, f.file_name, f.file_path, f.upload_date, f.user_id" +
+            " FROM file f" +
+            " Order by f.upload_date DESC ")
+    public List<File> getFilesOrderByLastCreated();
+
 }

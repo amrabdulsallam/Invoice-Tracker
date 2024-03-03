@@ -35,10 +35,10 @@ public class User implements Serializable {
     @Column(name = "signup_date")
     private Date signupDate;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<File> files;
 
-    @OneToMany(mappedBy = "userHistory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userHistory")
     private List<History> histories;
 
     @Override

@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(nativeQuery = true, value = " " +
-            " SELECT user.id, user.email, user.phone, user.role, user.signup_date " +
+            " SELECT user.id, user.email, user.phone, user.role, user.signup_date as signupDate " +
             " FROM user "
     )
     public List<UserBo> getAllUsersWithoutPassword();

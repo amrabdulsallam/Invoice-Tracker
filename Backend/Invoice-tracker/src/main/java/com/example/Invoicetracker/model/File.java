@@ -27,11 +27,11 @@ public class File implements Serializable {
     @Column(name = "upload_date")
     private Date uploadDate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "fileHistory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fileHistory")
     private List<History> histories;
 
     @Override
