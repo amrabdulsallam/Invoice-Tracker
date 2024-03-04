@@ -6,7 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -27,12 +26,8 @@ public class File implements Serializable {
     @Column(name = "upload_date")
     private Date uploadDate;
 
-    @ManyToOne()
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToMany(mappedBy = "fileHistory")
-    private List<History> histories;
+    @OneToOne(mappedBy = "invoiceFile")
+    private Invoice fileInvoice;
 
     @Override
     public String toString() {

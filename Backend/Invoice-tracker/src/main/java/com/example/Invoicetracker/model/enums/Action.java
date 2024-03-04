@@ -1,6 +1,6 @@
 package com.example.Invoicetracker.model.enums;
 
-public enum Status {
+public enum Action {
     DELETED,
     EDITED
 }

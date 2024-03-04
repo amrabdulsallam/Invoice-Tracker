@@ -1,6 +1,6 @@
 package com.example.Invoicetracker.model.enums;
 
-public enum Role {
+public enum UserRole {
     USER,
     SUPER_USER,
     AUDITOR
