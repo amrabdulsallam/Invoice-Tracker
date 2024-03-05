@@ -1,26 +1,26 @@
 package com.example.Invoicetracker.repository;
 
-import com.example.Invoicetracker.model.History;
+import com.example.Invoicetracker.model.InvoiceAudit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface HistoryRepository extends JpaRepository<History,Long> {
+public interface InvoiceAuditRepository extends JpaRepository<InvoiceAudit, Long> {
 
     @Query(nativeQuery = true, value = " " +
             " SELECT * " +
             " FROM history " +
             " WHERE history.user_id = userId "
     )
-    public Optional<List<History>> getUserHistory(long userId);
+    public Optional<List<InvoiceAudit>> getUserAudits(long userId);
 
     @Query(nativeQuery = true, value = " " +
             " SELECT * " +
             " FROM history " +
-            " WHERE history.file_id = fileId "
+            " WHERE history.invoice_id = invoiceId "
     )
-    public Optional<List<History>> getFileHistory(long fileId);
+    public Optional<List<InvoiceAudit>> getInvoiceAudits(long invoiceId);
 
 }
