@@ -1,6 +1,5 @@
 package com.example.Invoicetracker.model;
 
-import com.example.Invoicetracker.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,23 +26,26 @@ public class User implements Serializable {
     @Column(name = "phone")
     private String phone;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private Role role;
-
     @CreationTimestamp
     @Column(name = "signup_date")
     private Date signupDate;
 
-    @OneToMany(mappedBy = "user")
-    private List<File> files;
+    @OneToMany(mappedBy = "userInvoice")
+    private List<Invoice> userInvoices;
 
-    @OneToMany(mappedBy = "userHistory")
-    private List<History> histories;
+    @OneToMany(mappedBy = "userAudit")
+    private List<InvoiceAudit> userInvoiceAudit;
+
+    @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private List<Role> roles;
 
     @Override
     public String toString() {
-        return "User: " + this.email + " , " + "Role: " + this.role + " , " + "Signup Date: " + this.signupDate;
+        return "User: " + this.email + " , " + "Role: " + this.roles + " , " + "Signup Date: " + this.signupDate;
     }
 
 }

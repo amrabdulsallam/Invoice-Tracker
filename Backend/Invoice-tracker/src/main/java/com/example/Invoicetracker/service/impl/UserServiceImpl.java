@@ -1,45 +1,53 @@
 package com.example.Invoicetracker.service.impl;
 
+import com.example.Invoicetracker.exception.DuplicateEmailException;
 import com.example.Invoicetracker.exception.UserNotFoundException;
 import com.example.Invoicetracker.model.User;
 import com.example.Invoicetracker.repository.UserRepository;
 import com.example.Invoicetracker.repository.bo.UserBo;
 import com.example.Invoicetracker.service.UserService;
 import com.example.Invoicetracker.service.dto.UserDTO;
-import com.example.Invoicetracker.service.mapper.EntityMapper;
+import com.example.Invoicetracker.service.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         super();
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     @Override
     public UserDTO saveUser(User user) {
-        User newUser = userRepository.save(user);
-        return EntityMapper.convertToDto(newUser);
+        Optional<User> existsUser = userRepository.findByEmail(user.getEmail());
+        if (existsUser.isPresent()) {
+            throw new DuplicateEmailException("Duplicated email");
+        }
+        userRepository.save(user);
+        return userMapper.userToDto(user);
     }
 
     @Override
     public List<UserDTO> getUsers() {
         List<UserBo> users = userRepository.getAllUsersWithoutPassword();
-        return EntityMapper.mapUserBoListToUserDtoList(users);
+        return userMapper.userBoToUserDto(users);
     }
 
     @Override
     public UserDTO getUserById(long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found for the id : " + id));
-        return EntityMapper.convertToDto(user);
+        return userMapper.userToDto(user);
     }
 
     @Override
@@ -49,12 +57,12 @@ public class UserServiceImpl implements UserService {
 
         user.setEmail(newUser.getEmail());
         user.setPhone(newUser.getPhone());
-        user.setRole(newUser.getRole());
+        user.setRoles(newUser.getRoles());
         user.setPassword(newUser.getPassword());
 
         userRepository.save(user);
 
-        return EntityMapper.convertToDto(user);
+        return userMapper.userToDto(user);
     }
 
     @Override

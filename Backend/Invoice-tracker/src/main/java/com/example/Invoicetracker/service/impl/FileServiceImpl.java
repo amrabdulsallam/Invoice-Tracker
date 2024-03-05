@@ -1,11 +1,9 @@
 package com.example.Invoicetracker.service.impl;
 
 import com.example.Invoicetracker.exception.FileNotFoundException;
-import com.example.Invoicetracker.exception.UserNotFoundException;
 import com.example.Invoicetracker.model.File;
-import com.example.Invoicetracker.model.User;
 import com.example.Invoicetracker.repository.FileRepository;
-import com.example.Invoicetracker.repository.UserRepository;
+import com.example.Invoicetracker.repository.InvoiceRepository;
 import com.example.Invoicetracker.service.FileService;
 import com.example.Invoicetracker.service.SaveFileToDirectoryService;
 import com.example.Invoicetracker.service.dto.FileDTO;
@@ -23,13 +21,14 @@ public class FileServiceImpl implements FileService {
 
     private final FileRepository fileRepository;
 
-    private final UserRepository userRepository;
+
+    private final InvoiceRepository invoiceRepository;
 
     @Autowired
-    public FileServiceImpl(FileRepository fileRepository, UserRepository userRepository) {
+    public FileServiceImpl(FileRepository fileRepository, InvoiceRepository invoiceRepository) {
         super();
         this.fileRepository = fileRepository;
-        this.userRepository = userRepository;
+        this.invoiceRepository = invoiceRepository;
     }
 
     @Value("/Users/amrabdulsalam/Desktop/invoices/")
@@ -37,15 +36,11 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public FileReturnDTO saveFile(FileDTO file) throws IOException {
-        User user = userRepository.findById(file.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("User not found for the id : " + file.getUserId()));
-
         String newFilePath = SaveFileToDirectoryService.SaveFile(fileDirectory, file.getFile());
         File newFile = new File();
 
         newFile.setFileName(file.getFileName());
         newFile.setFilePath(newFilePath);
-        newFile.setUser(user);
 
         fileRepository.save(newFile);
 

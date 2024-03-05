@@ -1,8 +1,9 @@
 package com.example.Invoicetracker.repository.bo;
 
-import com.example.Invoicetracker.model.enums.Role;
+import com.example.Invoicetracker.service.dto.RoleDTO;
 
 import java.util.Date;
+import java.util.List;
 
 public interface UserBo {
 
@@ -12,7 +13,7 @@ public interface UserBo {
 
     public String getPhone();
 
-    public Role getRole();
+    public List<RoleDTO> getRole();
 
     public Date getSignupDate();
 
