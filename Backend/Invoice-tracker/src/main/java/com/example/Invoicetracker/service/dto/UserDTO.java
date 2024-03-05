@@ -1,9 +1,9 @@
 package com.example.Invoicetracker.service.dto;
 
-import com.example.Invoicetracker.model.enums.Role;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class UserDTO {
@@ -14,8 +14,8 @@ public class UserDTO {
 
     private String phone;
 
-    private Role role;
-
     private Date signupDate;
+
+    private List<RoleDTO> roles;
 
 }
