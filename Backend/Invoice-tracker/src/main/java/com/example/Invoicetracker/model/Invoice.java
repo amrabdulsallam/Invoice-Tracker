@@ -48,9 +48,13 @@ public class Invoice implements Serializable {
     @OneToMany(mappedBy = "invoiceAudit")
     private List<InvoiceAudit> invoiceAuditList;
 
+    @Column(name = "deleted")
+    private boolean deleted = false;
+
     @Override
     public String toString() {
-        return "Invoice Number: " + this.invoiceNumber + " , " + "Client Name: " + this.clientName + " , " + "Total Amount: " + this.totalAmount;
+        return "Invoice Number: " + this.invoiceNumber + " , " + "Client Name: " + this.clientName + " , " + "Total Amount: " + this.totalAmount
+                + " , " + "Invoice Items: " + this.items;
     }
 
 }
