@@ -11,15 +11,15 @@ public interface InvoiceAuditRepository extends JpaRepository<InvoiceAudit, Long
 
     @Query(nativeQuery = true, value = " " +
             " SELECT * " +
-            " FROM history " +
-            " WHERE history.user_id = userId "
+            " FROM invoice_audit i " +
+            " WHERE i.user_id = :userId "
     )
     public Optional<List<InvoiceAudit>> getUserAudits(long userId);
 
     @Query(nativeQuery = true, value = " " +
             " SELECT * " +
-            " FROM history " +
-            " WHERE history.invoice_id = invoiceId "
+            " FROM invoice_audit i " +
+            " WHERE i.invoice_id = :invoiceId "
     )
     public Optional<List<InvoiceAudit>> getInvoiceAudits(long invoiceId);
 
