@@ -26,6 +26,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     )
     public Optional<UserRole> getUserRoleByEmail(String email);
 
+    @Query(nativeQuery = true, value = " " +
+            " SELECT * " +
+            " FROM user u " +
+            " WHERE u.email = :email ")
     public Optional<User> findByEmail(String email);
 
 }
