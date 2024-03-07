@@ -2,6 +2,7 @@ package com.example.Invoicetracker.service;
 
 import com.example.Invoicetracker.model.User;
 import com.example.Invoicetracker.service.dto.UserDTO;
+import com.example.Invoicetracker.service.dto.UserLoginDTO;
 
 import java.util.List;
 
@@ -16,5 +17,7 @@ public interface UserService {
     UserDTO updateUser(User user, long id);
 
     void deleteUser(long id);
+
+    String checkCredentials(UserLoginDTO user);
 
 }

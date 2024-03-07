@@ -5,8 +5,10 @@ import com.example.Invoicetracker.exception.UserNotFoundException;
 import com.example.Invoicetracker.model.User;
 import com.example.Invoicetracker.repository.UserRepository;
 import com.example.Invoicetracker.repository.bo.UserBo;
+import com.example.Invoicetracker.security.JwtUtil;
 import com.example.Invoicetracker.service.UserService;
 import com.example.Invoicetracker.service.dto.UserDTO;
+import com.example.Invoicetracker.service.dto.UserLoginDTO;
 import com.example.Invoicetracker.service.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, JwtUtil jwtUtil) {
         super();
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -70,6 +74,18 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found for the id : " + id));
         userRepository.delete(user);
+    }
+
+    @Override
+    public String checkCredentials(UserLoginDTO user) {
+        User existsUser = userRepository.findByEmail(user.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (!existsUser.getPassword().equals(user.getPassword())) {
+            return "Wrong password !";
+        }
+
+        return jwtUtil.createToken(existsUser);
     }
 
 }
