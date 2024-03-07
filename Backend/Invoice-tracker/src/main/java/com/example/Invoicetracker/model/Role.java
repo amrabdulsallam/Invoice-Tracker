@@ -20,9 +20,6 @@ public class Role implements Serializable {
     @Column(name = "role")
     private UserRole role;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;
-
     @Override
     public String toString() {
         return "Role : " + role;
