@@ -1,9 +1,11 @@
 package com.example.Invoicetracker.service;
 
 import com.example.Invoicetracker.model.User;
+import com.example.Invoicetracker.service.dto.InvoiceDTO;
 import com.example.Invoicetracker.service.dto.UserDTO;
 import com.example.Invoicetracker.service.dto.UserLoginDTO;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface UserService {
@@ -19,5 +21,7 @@ public interface UserService {
     void deleteUser(long id);
 
     String checkCredentials(UserLoginDTO user);
+
+    Page<InvoiceDTO> getAllInvoicesByUser(long id, Pageable pageable);
 
 }
