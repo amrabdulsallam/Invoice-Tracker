@@ -1,24 +1,18 @@
 import React, { useState } from 'react';
  
 const BillDetails = ({ onAddItem, onDeleteItem }) => {
-    const [item, setItem] = useState('');
+    const [name, setItem] = useState('');
     const [quantity, setQuantity] = useState(1);
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState(1);
     const [errorMessage, setErrorMessage] = useState('');
  
     const handleAddItem = () => {
-        if (!item.trim()) {
+        if (!name.trim()) {
             setErrorMessage(`Please input data in the Item section.`);
             return;
         }
- 
-        // if (!/^[a-zA-Z]+$/.test(item)) {
-        //     setErrorMessage(`Item should only contain 
-        //         alphabetical characters.`);
-        //     return;
-        // }
         
-        const newItem = { item, quantity, price };
+        const newItem = { name, quantity, price };
         onAddItem(newItem);
         setItem('');
         setQuantity(1);
@@ -30,7 +24,7 @@ const BillDetails = ({ onAddItem, onDeleteItem }) => {
         <div>
             <label>Item:</label>
             <input type="text"
-                value={item}
+                value={name}
                 onChange={
                     (e) =>
                         setItem(e.target.value)} />
@@ -45,7 +39,7 @@ const BillDetails = ({ onAddItem, onDeleteItem }) => {
                 value={price}
                 onChange={
                     (e) =>
-                        setPrice(e.target.value)} />
+                        setPrice(parseFloat(e.target.value))} />
             <button
                 onClick={handleAddItem}>
                 Add Item
