@@ -1,0 +1,43 @@
+.invoice-details {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .invoice-info {
+    display: flex;
+  }
+  
+  .invoice-info p {
+    margin-right: 20px;
+  }
+  
+  .details {
+    margin-top: 20px;
+  }
+  
+  .details p {
+    margin-bottom: 10px;
+  }
+  
+  .details ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .details li {
+    margin-bottom: 5px;
+  }
+  
+  .details li strong {
+    margin-right: 5px;
+  }
+  

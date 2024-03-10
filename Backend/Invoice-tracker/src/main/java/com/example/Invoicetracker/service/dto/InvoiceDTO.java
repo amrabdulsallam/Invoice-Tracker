@@ -7,6 +7,8 @@ import java.util.List;
 @Data
 public class InvoiceDTO {
 
+    private long id;
+
     private String invoiceNumber;
 
     private String clientName;

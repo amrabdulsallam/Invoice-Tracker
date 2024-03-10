@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import axios from 'axios';
 import './App.css';
+
 
 const Signin = (props) => {
     const [email, setEmail] = useState('')
@@ -7,11 +9,10 @@ const Signin = (props) => {
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
 
-    const OnButtonClick = () => {
+    const OnButtonClick = async (e) => {
       setEmailError('')
       setPasswordError('')
     
-      // Check if the user has entered both fields correctly
       if ('' === email) {
         setEmailError('Please enter your email')
         return
@@ -27,12 +28,27 @@ const Signin = (props) => {
         return
       }
     
-      if (password.length < 7) {
+      if (password.length < 2) {
         setPasswordError('The password must be 8 characters or longer')
         return
       }
-    
-      alert(email+"\n"+password)
+      e.preventDefault();
+      try {
+          const response = await axios.post('http://localhost:8080/api/v1/login', {
+              email,
+              password
+          });
+          console.log(response.data);
+          if(response.data === "Wrong password !" || response.data === "No user found"){
+            alert("Invalid user");
+          }
+          else{
+            localStorage.setItem('token', response.data);
+            window.location.href = '/invoice-generator';
+          }
+      } catch (error) {
+          alert("Invalid user");
+      }
     }
   
     return (

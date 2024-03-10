@@ -1,6 +1,8 @@
 package com.example.Invoicetracker.repository;
 
 import com.example.Invoicetracker.model.Invoice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -37,5 +39,15 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
             " ORDER BY i.issue_date DESC "
     )
     List<Invoice> findAll();
+
+    @Query(nativeQuery = true , value = " " +
+            " SELECT * " +
+            " FROM invoice i" +
+            " WHERE " +
+            "   i.user_id = :userId " +
+            " AND " +
+            "   i.deleted = false "
+    )
+    Page<Invoice> getAllInvoicesByUser(long userId, Pageable pageable);
 
 }

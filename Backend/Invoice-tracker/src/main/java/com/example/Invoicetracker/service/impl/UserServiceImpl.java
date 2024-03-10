@@ -2,15 +2,21 @@ package com.example.Invoicetracker.service.impl;
 
 import com.example.Invoicetracker.exception.DuplicateEmailException;
 import com.example.Invoicetracker.exception.UserNotFoundException;
+import com.example.Invoicetracker.model.Invoice;
 import com.example.Invoicetracker.model.User;
+import com.example.Invoicetracker.repository.InvoiceRepository;
 import com.example.Invoicetracker.repository.UserRepository;
 import com.example.Invoicetracker.repository.bo.UserBo;
 import com.example.Invoicetracker.security.JwtUtil;
 import com.example.Invoicetracker.service.UserService;
+import com.example.Invoicetracker.service.dto.InvoiceDTO;
 import com.example.Invoicetracker.service.dto.UserDTO;
 import com.example.Invoicetracker.service.dto.UserLoginDTO;
+import com.example.Invoicetracker.service.mapper.InvoiceMapper;
 import com.example.Invoicetracker.service.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,13 +28,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
+    private final InvoiceMapper invoiceMapper;
+    private final InvoiceRepository invoiceRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, JwtUtil jwtUtil) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, JwtUtil jwtUtil, InvoiceMapper invoiceMapper, InvoiceRepository invoiceRepository) {
         super();
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.jwtUtil = jwtUtil;
+        this.invoiceMapper = invoiceMapper;
+        this.invoiceRepository = invoiceRepository;
     }
 
     @Override
@@ -86,6 +96,14 @@ public class UserServiceImpl implements UserService {
         }
 
         return jwtUtil.createToken(existsUser);
+    }
+
+    @Override
+    public Page<InvoiceDTO> getAllInvoicesByUser(long id, Pageable pageable) {
+        userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        Page<Invoice> invoices = invoiceRepository.getAllInvoicesByUser(id, pageable);
+        return invoiceMapper.invoicesToDtoListPage(invoices);
     }
 
 }
