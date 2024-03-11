@@ -42,6 +42,13 @@ public class InvoiceServiceImpl implements InvoiceService {
         this.invoiceAuditService = invoiceAuditService;
     }
 
+    /**
+     * Saves an invoice to DB
+     * @param invoiceDto The invoiceDTO to be saved
+     * @return The saved invoice in the DB
+     * @throws UserNotFoundException    If the user with the specified ID  not found
+     * @throws InvoiceNotFoundException If the file with the specified ID  not found
+     */
     @Override
     @Transactional
     public InvoiceDTO saveInvoice(InvoiceDTO invoiceDto) {
@@ -61,11 +68,21 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoiceDto;
     }
 
+    /**
+     * Retrieves all invoices
+     * @return List of Invoice DTO containing details of all invoices
+     */
     @Override
     public List<InvoiceDTO> getInvoices() {
         return invoiceMapper.invoicesToDtoList(invoiceRepository.findAll());
     }
 
+    /**
+     * Retrieves an invoice by its ID
+     * @param invoiceId The ID of the invoice to retrieve
+     * @return The invoice DTO containing details of the retrieved invoice
+     * @throws InvoiceNotFoundException If the invoice with the specified ID is not found
+     */
     @Override
     public InvoiceDTO getInvoiceById(long invoiceId) {
         Invoice invoice = invoiceRepository.findById(invoiceId)
@@ -73,6 +90,14 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoiceMapper.invoiceToDto(invoice);
     }
 
+    /**
+     * Updates an existing invoice
+     * @param newInvoice The updated invoice DTO
+     * @param invoiceId The ID of the invoice to update
+     * @return The updated invoice DTO
+     * @throws InvoiceNotFoundException If the invoice with the specified ID is not found
+     * @throws UserNotFoundException    If the user with the specified ID is not found
+     */
     @Override
     @Transactional
     public InvoiceDTO updateInvoice(InvoiceDTO newInvoice, long invoiceId) {
@@ -96,6 +121,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoiceMapper.invoiceToDto(invoice);
     }
 
+    /**
+     * Deletes an invoice by its ID
+     * @param invoiceId The ID of the invoice to delete
+     * @throws InvoiceNotFoundException If the invoice with the specified ID is not found
+     */
     @Override
     @Transactional
     public void deleteInvoice(long invoiceId) {

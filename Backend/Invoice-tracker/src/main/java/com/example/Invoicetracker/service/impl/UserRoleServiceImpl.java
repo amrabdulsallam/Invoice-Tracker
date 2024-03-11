@@ -29,6 +29,12 @@ public class UserRoleServiceImpl implements UserRoleService {
         this.userRoleMapper = userRoleMapper;
     }
 
+    /**
+     * Assigns a role to a user
+     * @param userId The ID of the user to assign the role
+     * @param userRole The role to be assigned such as (USER,SUPER_ADMIN and AUDITOR)
+     * @throws UserNotFoundException If the user with the specified ID is not found
+     */
     @Override
     public void assignRoleToUser(long userId, UserRole userRole) {
         User user = userRepository.findById(userId)
@@ -40,6 +46,12 @@ public class UserRoleServiceImpl implements UserRoleService {
         userRepository.save(user);
     }
 
+    /**
+     * Retrieves the roles assigned to a user
+     * @param userId The ID of the user
+     * @return UserWithRoleDTO containing details of the user and assigned roles
+     * @throws UserNotFoundException If the user with the specified ID is not found
+     */
     @Override
     public UserWithRoleDTO getRolesAssignedToUser(long userId) {
         User user = userRepository.findById(userId)
@@ -48,6 +60,12 @@ public class UserRoleServiceImpl implements UserRoleService {
         return userRoleMapper.userRoleToUserRoleDto(user);
     }
 
+    /**
+     * Deletes a role assigned to a user
+     * @param userId The ID of the user who have the role
+     * @param userRole The role to be deleted
+     * @throws UserNotFoundException If the user with the specified ID is not found
+     */
     @Override
     public void deleteRoleAssignedToUser(long userId, UserRole userRole) {
         User user = userRepository.findById(userId)
