@@ -28,6 +28,12 @@ public class InvoiceAuditServiceImpl implements InvoiceAuditService {
         this.invoiceAuditMapper = invoiceAuditMapper;
     }
 
+    /**
+     * Saves an audit record for the invoice action
+     * @param user The user performing the action
+     * @param invoice The invoice that the user selected to perform an action
+     * @param action The action performed such as : (ADDED , EDITED and DELETED)
+     */
     @Override
     public void saveInvoiceAudit(User user, Invoice invoice, Action action) {
         InvoiceAudit invoiceAudit = new InvoiceAudit();
@@ -45,6 +51,12 @@ public class InvoiceAuditServiceImpl implements InvoiceAuditService {
         invoiceAuditRepository.save(invoiceAudit);
     }
 
+    /**
+     * Retrieves all audits performed by a specific user
+     * @param userId the id of the user
+     * @return List of InvoiceAuditDTO containing details of all audits performed by the user
+     * @throws UserNotFoundException If the user with the specified ID is not found
+     */
     @Override
     public List<InvoiceAuditDTO> getAllAuditsByUser(long userId) {
         List<InvoiceAudit> userAudits = invoiceAuditRepository.getUserAudits(userId)
@@ -53,6 +65,12 @@ public class InvoiceAuditServiceImpl implements InvoiceAuditService {
         return invoiceAuditMapper.invoiceAuditsToDtoList(userAudits);
     }
 
+    /**
+     * Retrieves all audits performed on a specific invoice
+     * @param invoiceId the ID of the invoice
+     * @return List of InvoiceAuditDTO containing details of all audits performed on the invoice
+     * @throws InvoiceNotFoundException If the invoice with the specified ID is not found
+     */
     @Override
     public List<InvoiceAuditDTO> getAllAuditsByInvoice(long invoiceId) {
         List<InvoiceAudit> userAudits = invoiceAuditRepository.getInvoiceAudits(invoiceId)

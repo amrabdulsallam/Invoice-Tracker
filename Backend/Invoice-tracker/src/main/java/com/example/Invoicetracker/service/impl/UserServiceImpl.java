@@ -41,6 +41,12 @@ public class UserServiceImpl implements UserService {
         this.invoiceRepository = invoiceRepository;
     }
 
+    /**
+     * Saves a new user
+     * @param user The user data to be saved in the DB
+     * @return UserDTO which contains the saved user info stored in the DB
+     * @throws DuplicateEmailException If a user with the same email already exists
+     */
     @Override
     public UserDTO saveUser(User user) {
         Optional<User> existsUser = userRepository.findByEmail(user.getEmail());
@@ -51,12 +57,21 @@ public class UserServiceImpl implements UserService {
         return userMapper.userToDto(user);
     }
 
+    /**
+     * Retrieves all users
+     * @return List of UserDTO containing details of all users
+     */
     @Override
     public List<UserDTO> getUsers() {
         List<UserBo> users = userRepository.getAllUsersWithoutPassword();
         return userMapper.userBoToUserDto(users);
     }
 
+    /**
+     * Retrieves a user by its ID
+     * @param id The ID of the user to retrieve
+     * @return UserDTO which contains the user's data
+     */
     @Override
     public UserDTO getUserById(long id) {
         User user = userRepository.findById(id)
@@ -64,6 +79,13 @@ public class UserServiceImpl implements UserService {
         return userMapper.userToDto(user);
     }
 
+    /**
+     * Updates an existing user
+     * @param newUser The new user data to be saved in the DB
+     * @param id The ID of the user to update
+     * @return UserDTO which represents the updated user
+     * @throws UserNotFoundException If the user with the specified ID is not found.
+     */
     @Override
     public UserDTO updateUser(User newUser, long id) {
         User user = userRepository.findById(id)
@@ -79,6 +101,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.userToDto(user);
     }
 
+    /**
+     *  Deletes a user by its ID
+     * @param id The ID of the user to delete
+     * @throws UserNotFoundException If the user with the specified ID is not found
+     */
     @Override
     public void deleteUser(long id) {
         User user = userRepository.findById(id)
@@ -86,6 +113,12 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
+    /**
+     * Checks user credentials for login
+     * @param user User email and password to be checked
+     * @return JWT token if credentials are valid
+     * @throws UserNotFoundException If the user with the specified email is not found
+     */
     @Override
     public String checkCredentials(UserLoginDTO user) {
         User existsUser = userRepository.findByEmail(user.getEmail())
@@ -98,6 +131,13 @@ public class UserServiceImpl implements UserService {
         return jwtUtil.createToken(existsUser);
     }
 
+    /**
+     * Retrieves all invoices associated with a user
+     * @param id The ID of the user
+     * @param pageable  Pageable object for pagination
+     * @return Page of InvoiceDTO containing details of invoices associated with the user
+     * @throws UserNotFoundException If the user with the specified ID is not found
+     */
     @Override
     public Page<InvoiceDTO> getAllInvoicesByUser(long id, Pageable pageable) {
         userRepository.findById(id)
