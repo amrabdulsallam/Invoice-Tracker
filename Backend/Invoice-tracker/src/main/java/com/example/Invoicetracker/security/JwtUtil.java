@@ -1,9 +1,12 @@
 package com.example.Invoicetracker.security;
 
+import com.example.Invoicetracker.controller.AuthController;
 import com.example.Invoicetracker.model.Role;
 import com.example.Invoicetracker.model.User;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +20,8 @@ public class JwtUtil {
     private final String secret_key = "mysecretkey";
     private final long EXPIRATION_TIME_MS = 600000;
 
+    Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+
     private final JwtParser jwtParser;
 
     private final String TOKEN_HEADER = "Authorization";
@@ -27,6 +32,8 @@ public class JwtUtil {
     }
 
     public String createToken(User user) {
+        logger.info("Attempt to generate a new token for user : " + user.getEmail());
+
         Claims claims = Jwts.claims().setSubject(user.getEmail());
 
         claims.put("UserId", user.getId());
@@ -84,6 +91,7 @@ public class JwtUtil {
         try {
             return claims.getExpiration().after(new Date());
         } catch (Exception e) {
+            logger.error("Error while validating claims" + e.getMessage());
             throw e;
         }
     }

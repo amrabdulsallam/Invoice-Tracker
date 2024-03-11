@@ -5,6 +5,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+
+    Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
     @Autowired
     public JwtAuthorizationFilter(JwtUtil jwtUtil) {
@@ -52,6 +56,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
 
         } catch (Exception e) {
+            logger.error("Error with request : " + e.getMessage());
             errorDetails.put("message", "Authentication Error");
             errorDetails.put("details", e.getMessage());
             response.setStatus(HttpStatus.FORBIDDEN.value());
