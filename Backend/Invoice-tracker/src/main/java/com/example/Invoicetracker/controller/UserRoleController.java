@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,6 +25,7 @@ public class UserRoleController {
     }
 
     @PostMapping("/{role}")
+    @PreAuthorize("hasRole('SUPER_USER')")
     public ResponseEntity<?> assignRoleToUser(@PathVariable long userId, @PathVariable UserRole role) {
         try {
             logger.info("Attempt to assign {} role for user with id {} ", role, userId);
@@ -48,6 +50,7 @@ public class UserRoleController {
     }
 
     @DeleteMapping("/{role}")
+    @PreAuthorize("hasRole('SUPER_USER')")
     public ResponseEntity<?> deleteRoleAssignedToUser(@PathVariable long userId, @PathVariable UserRole role) {
         try {
             logger.info("Attempt to get roles assigned by user with id : " + userId);
