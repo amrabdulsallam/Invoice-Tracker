@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class FileController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAnyRole('SUPER_USER', 'USER')")
     public ResponseEntity<?> saveFile(@ModelAttribute FileDTO file) {
         try {
             logger.info("File uploaded with info : " + file);
@@ -38,6 +40,7 @@ public class FileController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasRole('SUPER_USER')")
     public ResponseEntity<List<FileReturnDTO>> getAllFiles() {
         logger.info("Attempt to get all files");
         return ResponseEntity.status(HttpStatus.OK).body(fileService.getFiles());
@@ -57,6 +60,7 @@ public class FileController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_USER', 'USER')")
     public ResponseEntity<?> updateFile(@ModelAttribute FileDTO newFile, @PathVariable long id) {
         try {
             logger.info("Attempt to update file with id " + id);
@@ -68,6 +72,7 @@ public class FileController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_USER', 'USER')")
     public ResponseEntity<?> deleteFile(@PathVariable long id) {
         try {
             logger.info("Attempt to delete file with id " + id);

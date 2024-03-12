@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,12 +47,14 @@ public class InvoiceController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('SUPER_USER', 'AUDITOR')")
     public ResponseEntity<?> getAllInvoices() {
         logger.info("Attempt to get all invoices");
         return ResponseEntity.status(HttpStatus.OK).body(invoiceService.getInvoices());
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_USER', 'USER')")
     public ResponseEntity<?> updateInvoice(@RequestBody InvoiceDTO invoice, @PathVariable long id) {
         try {
             logger.info("Attempt to update invoice with id : " + id);
@@ -63,6 +66,7 @@ public class InvoiceController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_USER', 'USER')")
     public ResponseEntity<?> deleteInvoice(@PathVariable long id) {
         try {
             logger.info("Attempt to delete invoice with id : " + id);
