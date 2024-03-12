@@ -53,7 +53,7 @@ const Signin = (props) => {
               window.location.href = '/admin-page';
             }
             else if(decodedToken.roles.includes('ROLE_AUDITOR')){
-
+              window.location.href = '/invoices';
             }
             else if(decodedToken.roles.includes('ROLE_USER')){
               window.location.href = '/invoice-generator';

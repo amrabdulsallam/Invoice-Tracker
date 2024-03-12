@@ -7,6 +7,7 @@ import Form from './Form';
 import Dashboard from './Dashboard';
 import InvoiceGenerator from './InvoiceGenerator';
 import AdminMainPage from './AdminMainPage'
+import AllInvoices from './AllUserInvoices';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/invoice-generator" element={<InvoiceGenerator />} />
       <Route path="/admin-page" element={<AdminMainPage />} />
+      <Route path="/invoices" element={<AllInvoices />} />
     </Routes>
   </div>
   );
