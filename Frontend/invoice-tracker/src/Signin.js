@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import './App.css';
+import jwt_decode, { jwtDecode } from 'jwt-decode';
 
 
 const Signin = (props) => {
@@ -8,6 +9,7 @@ const Signin = (props) => {
     const [password, setPassword] = useState('')
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
+    const [roles , setRoles] = useState([])
 
     const OnButtonClick = async (e) => {
       setEmailError('')
@@ -44,7 +46,19 @@ const Signin = (props) => {
           }
           else{
             localStorage.setItem('token', response.data);
-            window.location.href = '/invoice-generator';
+            const decodedToken = jwtDecode(response.data)
+            setRoles(decodedToken.roles)
+            console.log(roles)
+            if(decodedToken.roles.includes('ROLE_SUPER_USER')){
+              window.location.href = '/admin-page';
+            }
+            else if(decodedToken.roles.includes('ROLE_AUDITOR')){
+
+            }
+            else if(decodedToken.roles.includes('ROLE_USER')){
+              window.location.href = '/invoice-generator';
+            }
+            
           }
       } catch (error) {
           alert("Invalid user");
