@@ -112,7 +112,7 @@ const AdminPage = () => {
 
     const handleUserRoleDeletion = async () => {
       try {
-        await axios.delete('http://localhost:8080/api/v1/users/'+userId+'/roles/'+selectedOption2,
+        await axios.delete('http://localhost:8080/api/v1/users/'+userId2+'/roles/'+selectedOption2,
         {
             headers: {
                 'Authorization': 'Bearer '+localStorage.getItem('token'),
