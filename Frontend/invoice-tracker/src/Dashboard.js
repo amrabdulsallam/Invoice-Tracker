@@ -35,6 +35,7 @@ const Dashboard = () => {
                         'Content-Type': 'application/json'
                       }
                 });
+                console.log(response.data.content)
                 setInvoices(response.data.content)
             } catch (error) {
                 console.log(error);

@@ -17,7 +17,6 @@ const InvoiceGenerator = () => {
 
     const handleAddItem = (item) => {
         setItems([...items, item]);
-        console.log(items)
     };
 
     useEffect(() => {
@@ -75,7 +74,10 @@ const InvoiceGenerator = () => {
                     'Content-Type': 'application/json'
                   }
             });
-            console.log(response.data);
+            setItems([])
+            setClientName()
+            setInvoiceName()
+            alert("Invoice added")
 
         } catch (error) {
             alert("Could not upload invoice");
