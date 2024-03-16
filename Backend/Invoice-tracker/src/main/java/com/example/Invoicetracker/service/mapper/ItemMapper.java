@@ -11,4 +11,8 @@ public interface ItemMapper {
 
     List<Item> dtoToItems(List<ItemDTO> itemDTOS);
 
+    Item dtoToItem(ItemDTO itemDTO);
+
+    List<ItemDTO> itemListToDtos(List<Item> items);
+
 }
