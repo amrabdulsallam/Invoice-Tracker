@@ -15,6 +15,8 @@ const AdminPage = () => {
     const [userId, setUserId] = useState('');
     const [selectedOption2, setSelectedOption2] = useState('');
     const [userId2, setUserId2] = useState('');
+    const [item , setItem] = useState('')
+    const [price , setAddPrice] = useState(0)
 
     const handleUserIdChange = (event) => {
       setUserId(event.target.value);
@@ -28,6 +30,13 @@ const AdminPage = () => {
     const handleOptionChange2 = (event) => {
       setSelectedOption2(event.target.value);
     };
+
+    const handleAddItem = (event) => {
+      setItem(event.target.value)
+    }
+    const handleAddPrice = (event) => {
+      setAddPrice(event.target.value)
+    }
 
     useEffect(()=> {
       const token = localStorage.getItem('token')
@@ -122,6 +131,25 @@ const AdminPage = () => {
         alert("Role Deleted")
     } catch (error) {
         alert("Coudln't delete the role to the user")
+    }
+    }
+
+    const handleAddItems = async () => {
+      try {
+        await axios.post('http://localhost:8080/api/v1/items',
+        {
+          name : item,
+          price : price
+        },
+        {
+            headers: {
+                'Authorization': 'Bearer '+localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+              }
+        });
+        alert("Item Added")
+    } catch (error) {
+        alert("Coudln't add item")
     }
     }
 
@@ -237,6 +265,13 @@ const AdminPage = () => {
       </label>
       <br />
       <button onClick={handleUserRoleDeletion}>Submit</button>
+    </div>
+    <div className='form-container'>
+          <label>Item : </label>
+          <br />
+          <input type="text" value={item} onChange={(e) => handleAddItem(e)} />
+          <input type="number" value={price} onChange={(e) => handleAddPrice(e)} />
+          <button onClick={handleAddItems}>Submit</button>
     </div>
     </div>
     );
