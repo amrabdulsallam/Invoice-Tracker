@@ -3,7 +3,7 @@ package com.example.Invoicetracker.controller;
 import com.example.Invoicetracker.exception.UserNotFoundException;
 import com.example.Invoicetracker.model.User;
 import com.example.Invoicetracker.service.UserService;
-import com.example.Invoicetracker.service.dto.InvoiceDTO;
+import com.example.Invoicetracker.service.dto.InvoiceReturnDTO;
 import com.example.Invoicetracker.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,7 +95,7 @@ public class UserController {
         try {
             logger.info("Attempt to get all invoices by user with id : " + id);
             Pageable pageable = PageRequest.of(page, size);
-            Page<InvoiceDTO> invoices = userService.getAllInvoicesByUser(id, pageable);
+            Page<InvoiceReturnDTO> invoices = userService.getAllInvoicesByUser(id, pageable);
             logger.info("Successful getting all invoices by user with id " + id);
             return ResponseEntity.status(HttpStatus.OK).body(invoices);
         } catch (Exception e) {
