@@ -46,8 +46,22 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
             " WHERE " +
             "   i.user_id = :userId " +
             " AND " +
-            "   i.deleted = false "
+            "   i.deleted = false " +
+            " ORDER BY i.issue_date DESC "
     )
     Page<Invoice> getAllInvoicesByUser(long userId, Pageable pageable);
+
+    @Query(nativeQuery = true , value = " " +
+            " SELECT * " +
+            " FROM invoice i" +
+            " WHERE " +
+            "   i.user_id = :userId " +
+            " AND " +
+            "   i.deleted = false " +
+            " AND" +
+            "   i.invoice_number = :search " +
+            " ORDER BY i.issue_date DESC "
+    )
+    Page<Invoice> getAllInvoicesByUserWithSearch(long userId, Pageable pageable, String search);
 
 }

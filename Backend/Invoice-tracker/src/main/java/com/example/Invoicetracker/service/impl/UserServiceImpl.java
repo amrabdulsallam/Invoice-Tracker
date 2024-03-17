@@ -153,4 +153,20 @@ public class UserServiceImpl implements UserService {
         return invoiceMapper.invoicesToDtoListPage(invoices);
     }
 
+    /**
+     * Get all invoices associated with a user with a search value
+     * @param id    The ID of the user
+     * @param pageable Pageable object for pagination
+     * @param search Search value
+     * @return Page of InvoiceReturnDTO containing details of invoices associated with the user
+     * @throws UserNotFoundException If the user with the specified ID is not found
+     */
+    @Override
+    public Page<InvoiceReturnDTO> getAllInvoicesByUserWithSearch(long id, Pageable pageable, String search) {
+        userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        Page<Invoice> invoices = invoiceRepository.getAllInvoicesByUserWithSearch(id, pageable ,search);
+        return invoiceMapper.invoicesToDtoListPage(invoices);
+    }
+
 }

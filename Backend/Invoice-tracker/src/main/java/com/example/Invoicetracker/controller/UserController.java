@@ -91,13 +91,20 @@ public class UserController {
     @PreAuthorize("hasAnyRole('SUPER_USER', 'USER')")
     public ResponseEntity<?> getAllInvoicesByUser(@PathVariable long id,
                                                   @RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "3") int size) {
+                                                  @RequestParam(defaultValue = "3") int size,
+                                                  @RequestParam(name = "search", required = false) String search) {
         try {
             logger.info("Attempt to get all invoices by user with id : " + id);
             Pageable pageable = PageRequest.of(page, size);
-            Page<InvoiceReturnDTO> invoices = userService.getAllInvoicesByUser(id, pageable);
-            logger.info("Successful getting all invoices by user with id " + id);
-            return ResponseEntity.status(HttpStatus.OK).body(invoices);
+            if (search != null && !search.isEmpty()) {
+                Page<InvoiceReturnDTO> invoices = userService.getAllInvoicesByUserWithSearch(id, pageable, search);
+                logger.info("Successful getting all invoices by user with {} and search {}", id, search);
+                return ResponseEntity.status(HttpStatus.OK).body(invoices);
+            } else {
+                Page<InvoiceReturnDTO> invoices = userService.getAllInvoicesByUser(id, pageable);
+                logger.info("Successful getting all invoices by user with id " + id);
+                return ResponseEntity.status(HttpStatus.OK).body(invoices);
+            }
         } catch (Exception e) {
             logger.error("Failed to get user invoices : {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
