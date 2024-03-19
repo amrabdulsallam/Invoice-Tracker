@@ -1,5 +1,6 @@
 package com.example.Invoicetracker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,18 +19,16 @@ public class Item implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "quantity", nullable = false)
-    private int quantity;
-
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @ManyToMany(mappedBy = "items")
-    private List<Invoice> invoices;
+    @OneToMany(mappedBy = "item")
+    @JsonIgnore
+    private List<InvoiceItem> invoiceItems;
 
     @Override
     public String toString() {
-        return "Item Name: " + this.name + " , " + "Quantity: " + this.quantity + " , " + "Price Per Unit: " + this.price;
+        return "Item Name: " + this.name + " , " + "Price Per Unit: " + this.price;
     }
 
 }

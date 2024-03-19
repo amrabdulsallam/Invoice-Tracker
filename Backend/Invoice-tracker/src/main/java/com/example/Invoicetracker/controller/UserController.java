@@ -3,7 +3,7 @@ package com.example.Invoicetracker.controller;
 import com.example.Invoicetracker.exception.UserNotFoundException;
 import com.example.Invoicetracker.model.User;
 import com.example.Invoicetracker.service.UserService;
-import com.example.Invoicetracker.service.dto.InvoiceDTO;
+import com.example.Invoicetracker.service.dto.InvoiceReturnDTO;
 import com.example.Invoicetracker.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,13 +91,20 @@ public class UserController {
     @PreAuthorize("hasAnyRole('SUPER_USER', 'USER')")
     public ResponseEntity<?> getAllInvoicesByUser(@PathVariable long id,
                                                   @RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "3") int size) {
+                                                  @RequestParam(defaultValue = "3") int size,
+                                                  @RequestParam(name = "search", required = false) String search) {
         try {
             logger.info("Attempt to get all invoices by user with id : " + id);
             Pageable pageable = PageRequest.of(page, size);
-            Page<InvoiceDTO> invoices = userService.getAllInvoicesByUser(id, pageable);
-            logger.info("Successful getting all invoices by user with id " + id);
-            return ResponseEntity.status(HttpStatus.OK).body(invoices);
+            if (search != null && !search.isEmpty()) {
+                Page<InvoiceReturnDTO> invoices = userService.getAllInvoicesByUserWithSearch(id, pageable, search);
+                logger.info("Successful getting all invoices by user with {} and search {}", id, search);
+                return ResponseEntity.status(HttpStatus.OK).body(invoices);
+            } else {
+                Page<InvoiceReturnDTO> invoices = userService.getAllInvoicesByUser(id, pageable);
+                logger.info("Successful getting all invoices by user with id " + id);
+                return ResponseEntity.status(HttpStatus.OK).body(invoices);
+            }
         } catch (Exception e) {
             logger.error("Failed to get user invoices : {} ", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

@@ -18,9 +18,9 @@ function InvoiceDetails({ invoice , onDelete , onEdit }) {
         <p><strong>Total Amount:</strong> ${invoice.totalAmount}</p>
         <h3>Items:</h3>
         <ul>
-          {invoice.items.map((item, index) => (
+          {invoice.invoiceItems.map((item, index) => (
             <li key={index}>
-              <strong>Name:</strong> {item.name}, <strong>Quantity:</strong> {item.quantity}, <strong>Price:</strong> ${item.price}
+              <strong>Name:</strong> {item.item['name']}, <strong>Quantity:</strong> {item.quantity}, <strong>Price:</strong> ${item.item['price']}
             </li>
           ))}
         </ul>

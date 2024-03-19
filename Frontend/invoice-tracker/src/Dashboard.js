@@ -8,7 +8,8 @@ const Dashboard = () => {
     const [page , setPage] = useState(0)
     const [userId ,setUserId] = useState();
     const [invoices , setInvoices] = useState([])
-    
+    const [search , setSearch] = useState('')
+
     useEffect(()=> {
         const token = localStorage.getItem('token')
         if(token === null){
@@ -35,6 +36,7 @@ const Dashboard = () => {
                         'Content-Type': 'application/json'
                       }
                 });
+                console.log(response.data.content)
                 setInvoices(response.data.content)
             } catch (error) {
                 console.log(error);
@@ -54,9 +56,35 @@ const Dashboard = () => {
         setPage(page + 1)
     }
 
+    const handleSearch = async (e) => {
+        try {
+            const response = await axios.get('http://localhost:8080/api/v1/users/'+userId+'/invoices',
+            {
+                params : {
+                    page : page,
+                    size : 3,
+                    search : search
+                },
+                headers: {
+                    'Authorization': 'Bearer '+localStorage.getItem('token'),
+                    'Content-Type': 'application/json'
+                  }
+            });
+            console.log(response.data.content)
+            setInvoices(response.data.content)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return(
         <div>
             <h1>Dashboard</h1>
+            <label>Search for invoice : </label>
+            <br/>
+            <input value={search} onChange={(e) => setSearch(e.target.value)}/>
+            <br/>
+            <button onClick={handleSearch}>Submit</button>
             <InvoicesList invoices={invoices} />
             <footer className="pages">
                 <button onClick={HandlePrePage}>Prev</button>

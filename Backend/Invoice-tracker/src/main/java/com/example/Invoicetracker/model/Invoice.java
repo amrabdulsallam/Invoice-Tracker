@@ -1,5 +1,6 @@
 package com.example.Invoicetracker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,18 +35,16 @@ public class Invoice implements Serializable {
     @JoinColumn(name = "file_id")
     private File invoiceFile;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "invoice_item",
-            joinColumns = @JoinColumn(name = "invoice_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id")
-    )
-    private List<Item> items;
+    @OneToMany(mappedBy = "invoice")
+    @JsonIgnore
+    private List<InvoiceItem> invoiceItems;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User userInvoice;
 
     @OneToMany(mappedBy = "invoiceAudit")
+    @JsonIgnore
     private List<InvoiceAudit> invoiceAuditList;
 
     @Column(name = "deleted")
@@ -53,8 +52,14 @@ public class Invoice implements Serializable {
 
     @Override
     public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for(InvoiceItem item : invoiceItems){
+            stringBuilder.append(item.getItem().getName())
+                    .append("Quantity: ").append(item.getQuantity())
+                    .append(" Price :").append(item.getItem().getPrice());
+        }
         return "Invoice Number: " + this.invoiceNumber + " , " + "Client Name: " + this.clientName + " , " + "Total Amount: " + this.totalAmount
-                + " , " + "Invoice Items: " + this.items;
+                + " , " + "Invoice Items: " + stringBuilder;
     }
 
 }

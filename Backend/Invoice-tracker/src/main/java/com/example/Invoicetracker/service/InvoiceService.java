@@ -1,6 +1,7 @@
 package com.example.Invoicetracker.service;
 
 import com.example.Invoicetracker.service.dto.InvoiceDTO;
+import com.example.Invoicetracker.service.dto.InvoiceReturnDTO;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface InvoiceService {
 
     InvoiceDTO saveInvoice(InvoiceDTO invoice);
 
-    List<InvoiceDTO> getInvoices();
+    List<InvoiceReturnDTO> getInvoices();
 
     InvoiceDTO getInvoiceById(long invoiceId);
 

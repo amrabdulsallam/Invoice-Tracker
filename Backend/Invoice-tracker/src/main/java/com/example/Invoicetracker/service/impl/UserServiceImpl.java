@@ -9,7 +9,7 @@ import com.example.Invoicetracker.repository.UserRepository;
 import com.example.Invoicetracker.repository.bo.UserBo;
 import com.example.Invoicetracker.security.JwtUtil;
 import com.example.Invoicetracker.service.UserService;
-import com.example.Invoicetracker.service.dto.InvoiceDTO;
+import com.example.Invoicetracker.service.dto.InvoiceReturnDTO;
 import com.example.Invoicetracker.service.dto.UserDTO;
 import com.example.Invoicetracker.service.dto.UserLoginDTO;
 import com.example.Invoicetracker.service.mapper.InvoiceMapper;
@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Saves a new user
+     *
      * @param user The user data to be saved in the DB
      * @return UserDTO which contains the saved user info stored in the DB
      * @throws DuplicateEmailException If a user with the same email already exists
@@ -59,6 +60,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Retrieves all users
+     *
      * @return List of UserDTO containing details of all users
      */
     @Override
@@ -69,6 +71,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Retrieves a user by its ID
+     *
      * @param id The ID of the user to retrieve
      * @return UserDTO which contains the user's data
      */
@@ -81,8 +84,9 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Updates an existing user
+     *
      * @param newUser The new user data to be saved in the DB
-     * @param id The ID of the user to update
+     * @param id      The ID of the user to update
      * @return UserDTO which represents the updated user
      * @throws UserNotFoundException If the user with the specified ID is not found.
      */
@@ -102,7 +106,8 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *  Deletes a user by its ID
+     * Deletes a user by its ID
+     *
      * @param id The ID of the user to delete
      * @throws UserNotFoundException If the user with the specified ID is not found
      */
@@ -115,6 +120,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Checks user credentials for login
+     *
      * @param user User email and password to be checked
      * @return JWT token if credentials are valid
      * @throws UserNotFoundException If the user with the specified email is not found
@@ -133,16 +139,33 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Retrieves all invoices associated with a user
-     * @param id The ID of the user
-     * @param pageable  Pageable object for pagination
-     * @return Page of InvoiceDTO containing details of invoices associated with the user
+     *
+     * @param id       The ID of the user
+     * @param pageable Pageable object for pagination
+     * @return Page of InvoiceReturnDTO containing details of invoices associated with the user
      * @throws UserNotFoundException If the user with the specified ID is not found
      */
     @Override
-    public Page<InvoiceDTO> getAllInvoicesByUser(long id, Pageable pageable) {
+    public Page<InvoiceReturnDTO> getAllInvoicesByUser(long id, Pageable pageable) {
         userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         Page<Invoice> invoices = invoiceRepository.getAllInvoicesByUser(id, pageable);
+        return invoiceMapper.invoicesToDtoListPage(invoices);
+    }
+
+    /**
+     * Get all invoices associated with a user with a search value
+     * @param id    The ID of the user
+     * @param pageable Pageable object for pagination
+     * @param search Search value
+     * @return Page of InvoiceReturnDTO containing details of invoices associated with the user
+     * @throws UserNotFoundException If the user with the specified ID is not found
+     */
+    @Override
+    public Page<InvoiceReturnDTO> getAllInvoicesByUserWithSearch(long id, Pageable pageable, String search) {
+        userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+        Page<Invoice> invoices = invoiceRepository.getAllInvoicesByUserWithSearch(id, pageable ,search);
         return invoiceMapper.invoicesToDtoListPage(invoices);
     }
 
