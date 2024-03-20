@@ -1,5 +1,6 @@
 package com.example.Invoicetracker.security;
 
+import com.example.Invoicetracker.exception.AuthorizationException;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -53,13 +53,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 Authentication authentication =
                         new UsernamePasswordAuthenticationToken(email, "", roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                throw new AuthorizationException("User have no permissions");
             }
 
         } catch (Exception e) {
             logger.error("Error with request : " + e.getMessage());
             errorDetails.put("message", "Authentication Error");
             errorDetails.put("details", e.getMessage());
-            response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         }
         filterChain.doFilter(request, response);

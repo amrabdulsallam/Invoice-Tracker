@@ -1,12 +1,11 @@
 package com.example.Invoicetracker.controller;
 
+import com.example.Invoicetracker.controller.entity.ResponseEntity;
 import com.example.Invoicetracker.service.ItemService;
 import com.example.Invoicetracker.service.dto.ItemDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,26 +23,16 @@ public class ItemController {
 
     @GetMapping
     public ResponseEntity<?> getAllItems() {
-        try {
-            logger.info("Attempt to get all items ");
-            return ResponseEntity.status(HttpStatus.OK).body(itemService.getItems());
-        } catch (Exception e) {
-            logger.error("Error while getting all items {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        logger.info("Attempt to get all items ");
+        return new ResponseEntity<>(itemService.getItems());
     }
 
     @PostMapping
     public ResponseEntity<?> addItem(@RequestBody ItemDTO item) {
-        try {
-            logger.info("Attempt to add item : " + item);
-            itemService.addItem(item.getName(), item.getPrice());
-            logger.info("Successfully adding item: " + item);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (Exception e) {
-            logger.error("Error while adding item {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        logger.info("Attempt to add item : " + item);
+        itemService.addItem(item.getName(), item.getPrice());
+        logger.info("Successfully adding item: " + item);
+        return new ResponseEntity<>();
     }
 
 }

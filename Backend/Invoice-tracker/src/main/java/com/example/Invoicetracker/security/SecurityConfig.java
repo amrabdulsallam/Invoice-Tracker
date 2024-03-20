@@ -27,7 +27,6 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .requestMatchers("/api/v1/login").permitAll()
                 .requestMatchers("/api/v1/signup").permitAll()
-                .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
